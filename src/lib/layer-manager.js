@@ -263,7 +263,10 @@ export default class LayerManager {
         // End layer lifecycle method: render sublayers
 
         if (sublayers) {
-          sublayers = Array.isArray(sublayers) ? sublayers : [sublayers];
+          // Flatten the returned array, removing any null, undefined or false
+          // this allows layers to render sublayers conditionally
+          // (see CompositeLayer.renderLayers docs)
+          sublayers = flatten(sublayers, {filter: Boolean});
 
           // populate reference to parent layer
           sublayers.forEach(layer => {
